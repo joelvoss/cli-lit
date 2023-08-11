@@ -1,0 +1,50 @@
+{
+  "name": "cli-lit",
+  "description": "Tool to build Command Line Interface (CLI) applications",
+  "version": "0.0.1",
+  "author": "Joel Voß <mail@joelvoss.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/joelvoss/cli-lit",
+  "bugs": {
+    "url": "https://github.com/joelvoss/cli-lit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelvoss/cli-lit.git"
+  },
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/cli-lit.cjs",
+  "module": "dist/cli-lit.module.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/cli-lit.cjs",
+    "import": "./dist/cli-lit.modern.js"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "./Taskfile.sh test",
+    "prepublishOnly": "./Taskfile.sh build"
+  },
+  "devDependencies": {
+    "@jvdx/core": "^3.5.0",
+    "@types/jest": "^29.5.3",
+    "typescript": "5.1.6"
+  },
+  "prettier": "@jvdx/prettier-config",
+  "prettierIgnore": [
+    "tests/",
+    "dist/"
+  ],
+  "eslintConfig": {
+    "extends": "@jvdx/eslint-config"
+  },
+  "eslintIgnore": [
+    "tests/",
+    "dist/"
+  ]
+}
