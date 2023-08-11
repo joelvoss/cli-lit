@@ -1,6 +1,6 @@
 {
   "name": "cli-lit",
-  "description": "Tool to build Command Line Interface (CLI) applications",
+  "description": "Tool for building command-line interface (CLI) applications for Node.js",
   "version": "0.0.1",
   "author": "Joel Voß <mail@joelvoss.com>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 # cli-lit
 
-Tool to build Command Line Interface (CLI) applications.
+Tool for building command-line interface (CLI) applications for Node.js
 
 ## Requirements
 
