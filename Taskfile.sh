@@ -36,8 +36,7 @@ test() {
   jvdx test \
     --testPathPattern=/tests \
     --passWithNoTests \
-    --config ./jest.config.json \
-    \ $*
+    --config ./jest.config.json $*
 }
 
 validate() {
