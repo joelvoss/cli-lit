@@ -12,10 +12,6 @@ fi
 # //////////////////////////////////////////////////////////////////////////////
 # START tasks
 
-start() {
-  node dist/cli-lit.module.js $*
-}
-
 build() {
   jvdx build --clean -f modern,cjs,esm $*
 }
@@ -55,7 +51,6 @@ clean() {
 
 default() {
   build
-  start
 }
 
 # END tasks
