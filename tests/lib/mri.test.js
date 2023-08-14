@@ -1,15 +1,15 @@
-import { mri } from '../src/lib/mri';
+import { argvParser } from '../../src/lib/mri';
 
 describe('mri', () => {
 	test(`basic args`, () => {
-		const res1 = mri(['--no-moo']);
-		const res2 = mri(['-v', 'a', '-v', 'b', '-v', 'c']);
+		const res1 = argvParser(['--no-moo']);
+		const res2 = argvParser(['-v', 'a', '-v', 'b', '-v', 'c']);
 		expect(res1).toEqual({ moo: false, _: [] });
 		expect(res2).toEqual({ v: ['a', 'b', 'c'], _: [] });
 	});
 
 	test(`comprehensive args`, () => {
-		const res3 = mri([
+		const res3 = argvParser([
 			'--name=meowmers',
 			'bare',
 			'-cats',
@@ -50,7 +50,7 @@ describe('mri', () => {
 	});
 
 	test('flag + default', () => {
-		const res = mri(['--foo'], {
+		const res = argvParser(['--foo'], {
 			default: { bar: true },
 		});
 		expect(res).toEqual({ foo: true, bar: true, _: [] });
@@ -59,7 +59,7 @@ describe('mri', () => {
 	});
 
 	test('flag + default and alias', () => {
-		const res = mri(['--foo'], {
+		const res = argvParser(['--foo'], {
 			default: { bar: true },
 			alias: { bar: 'b' },
 		});
@@ -70,11 +70,11 @@ describe('mri', () => {
 	});
 
 	test('flag + default w/ alias', () => {
-		const res1 = mri(['--arg', '01'], {
+		const res1 = argvParser(['--arg', '01'], {
 			alias: { a: ['arg'] },
 			default: { arg: '' },
 		});
-		const res2 = mri(['-a', '01'], {
+		const res2 = argvParser(['-a', '01'], {
 			alias: { a: ['arg'] },
 			default: { arg: '' },
 		});
@@ -84,11 +84,11 @@ describe('mri', () => {
 
 		// ---
 
-		const res3 = mri(['-a', '01'], {
+		const res3 = argvParser(['-a', '01'], {
 			alias: { arg: ['a'] },
 			default: { a: '' },
 		});
-		const res4 = mri(['--arg', '01'], {
+		const res4 = argvParser(['--arg', '01'], {
 			alias: { arg: ['a'] },
 			default: { a: '' },
 		});
@@ -98,7 +98,7 @@ describe('mri', () => {
 
 		// ---
 
-		const res5 = mri(['-a', '01'], {
+		const res5 = argvParser(['-a', '01'], {
 			alias: { arg: ['a'] },
 			default: { arg: '' },
 		});
@@ -107,7 +107,7 @@ describe('mri', () => {
 	});
 
 	test('alias', () => {
-		const res = mri(['-f', '11', '--zoom', '55'], {
+		const res = argvParser(['-f', '11', '--zoom', '55'], {
 			alias: { z: 'zoom' },
 		});
 		expect(res.zoom).toEqual(55);
@@ -116,7 +116,7 @@ describe('mri', () => {
 	});
 
 	test('multiple aliases', () => {
-		const res = mri(['-f', '11', '--zoom', '55'], {
+		const res = argvParser(['-f', '11', '--zoom', '55'], {
 			alias: { z: ['zm', 'zoom'] },
 		});
 		expect(res.zoom).toEqual(55);
@@ -126,20 +126,20 @@ describe('mri', () => {
 	});
 
 	test('flag + default null value', () => {
-		const res = mri(['--foo'], { default: { bar: null } });
+		const res = argvParser(['--foo'], { default: { bar: null } });
 		expect(res).toEqual({ foo: true, bar: null, _: [] });
 	});
 
 	test('flag + default boolean value', () => {
-		const res1 = mri(['-t'], { default: { t: true } });
+		const res1 = argvParser(['-t'], { default: { t: true } });
 		expect(res1).toEqual({ t: true, _: [] });
 		expect(typeof res1.t).toEqual('boolean');
 
-		const res2 = mri(['-t'], { default: { t: false } });
+		const res2 = argvParser(['-t'], { default: { t: false } });
 		expect(res2).toEqual({ t: true, _: [] });
 		expect(typeof res2.t).toEqual('boolean');
 
-		const res3 = mri(['--no-two'], { default: { two: true } });
+		const res3 = argvParser(['--no-two'], { default: { two: true } });
 		expect(res3).toEqual({ two: false, _: [] });
 		expect(typeof res3.two).toEqual('boolean');
 	});
@@ -147,30 +147,30 @@ describe('mri', () => {
 	test('flag + default boolean value & alias', () => {
 		const alias = { t: ['tt'], two: ['toot'] };
 
-		const res1 = mri(['-t'], { alias, default: { t: true } });
+		const res1 = argvParser(['-t'], { alias, default: { t: true } });
 		expect(res1).toEqual({ t: true, tt: true, _: [] });
 		expect(typeof res1.t).toEqual('boolean');
 
-		const res2 = mri(['-t'], { alias, default: { t: false } });
+		const res2 = argvParser(['-t'], { alias, default: { t: false } });
 		expect(res2).toEqual({ t: true, tt: true, _: [] });
 		expect(typeof res2.t).toEqual('boolean');
 
-		const res3 = mri(['--no-two'], { alias, default: { two: true } });
+		const res3 = argvParser(['--no-two'], { alias, default: { two: true } });
 		expect(res3).toEqual({ two: false, toot: false, _: [] });
 		expect(typeof res3.two).toEqual('boolean');
 	});
 
 	test('flag + default boolean value & string & alias', () => {
-		const res1 = mri(['-t'], { default: { t: 'hi' } });
+		const res1 = argvParser(['-t'], { default: { t: 'hi' } });
 		expect(res1).toEqual({ t: true, _: [] });
 		expect(typeof res1.t).toEqual('boolean');
 
-		const res2 = mri(['-t'], { alias: { t: 'tt' }, default: { t: 'boo' } });
+		const res2 = argvParser(['-t'], { alias: { t: 'tt' }, default: { t: 'boo' } });
 		expect(res2).toEqual({ t: true, tt: true, _: [] });
 		expect(typeof res2.t).toEqual('boolean');
 
 		// --no-* overrides
-		const res3 = mri(['--no-two'], { default: { two: 'hi' } });
+		const res3 = argvParser(['--no-two'], { default: { two: 'hi' } });
 		expect(res3).toEqual({ two: false, _: [] });
 		expect(typeof res3.two).toEqual('boolean');
 	});

@@ -1,28 +1,19 @@
 import { toArr } from '@/lib/to-arr';
+import { ArgvParserOptions, ArgvParserOutput } from '@/types';
 
 ////////////////////////////////////////////////////////////////////////////////
 
-type Options = {
-	alias?: Record<string, string | string[]>;
-	default?: Record<string, any>;
-	[key: string]: any;
-};
-
-type Out = {
-	_: Array<string | number | boolean>;
-	[key: string]: any;
-};
-
-////////////////////////////////////////////////////////////////////////////////
-
-export function mri(_args: typeof process.argv, _opts?: Options) {
+export function argvParser(
+	_args: typeof process.argv,
+	_opts?: ArgvParserOptions,
+) {
 	const args = _args || [];
-	const opts: Options = _opts || {};
+	const opts: ArgvParserOptions = _opts || {};
 
 	const hasAliases = opts.alias != null;
 	const hasDefaults = opts.default != null;
 
-	const out: Out = { _: [] };
+	const out: ArgvParserOutput = { _: [] };
 	const alias: Record<string, string[]> = {};
 
 	// NOTE(joel): Expand aliases for every permutation.

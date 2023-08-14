@@ -13,7 +13,7 @@ fi
 # START tasks
 
 start() {
-  node dist/cli-lit.module.js
+  node dist/cli-lit.module.js $*
 }
 
 build() {
@@ -37,6 +37,10 @@ test() {
     --testPathPattern=/tests \
     --passWithNoTests \
     --config ./jest.config.json $*
+}
+
+test_fixture() {
+  node "tests/fixtures/$1.js" ${@:2}
 }
 
 validate() {

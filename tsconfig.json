@@ -22,6 +22,7 @@
     },
 
     /* Misc */
-    "removeComments": true
+    "removeComments": true,
+    "downlevelIteration": true,
   }
 }
