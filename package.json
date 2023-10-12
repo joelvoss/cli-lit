@@ -13,7 +13,7 @@
     "url": "git+https://github.com/joelvoss/cli-lit.git"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "type": "module",
   "source": "src/index.ts",
@@ -34,10 +34,10 @@
     "prepublishOnly": "./Taskfile.sh build"
   },
   "devDependencies": {
-    "@jvdx/core": "^3.5.0",
-    "@types/jest": "^29.5.3",
+    "@jvdx/core": "^3.6.0",
+    "@types/jest": "^29.5.5",
     "ts-node": "^10.9.1",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "prettier": "@jvdx/prettier-config",
   "prettierIgnore": [

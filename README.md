@@ -2,10 +2,6 @@
 
 Tool for building command-line interface (CLI) applications for Node.js
 
-## Requirements
-
-- [Node v18+][install-node]
-
 ## Installation
 
 ```bash
