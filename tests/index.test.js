@@ -1,6 +1,6 @@
 import { cli } from '../src/index';
 
-describe('sade', () => {
+describe('cli', () => {
 	test('export', () => {
 		expect(typeof cli).toBe('function');
 	});
