@@ -1,17 +1,20 @@
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { cli } from '../src/index';
+
+const noop = vi.fn() as () => never;
 
 describe('usage tests', () => {
 	beforeEach(() => {
-		jest.restoreAllMocks();
-		jest.resetAllMocks();
+		vi.restoreAllMocks();
+		vi.resetAllMocks();
 	});
 
 	test('basic', () => {
-		const fn = jest.fn();
+		const fn = vi.fn() as () => never;
 
 		const prog = cli('bin').command('foo').alias('f', 'fo').action(fn);
 
-		prog.parse(['', '', 'foo']);
+		prog.parse(['', '', 'foo'], {});
 		expect(fn).toBeCalledTimes(1);
 		expect(fn).toHaveBeenLastCalledWith({ _: [] });
 
@@ -25,9 +28,9 @@ describe('usage tests', () => {
 	});
 
 	test('basic (missing command)', () => {
-		const mockExit = jest.spyOn(process, 'exit').mockImplementation();
-		console.error = jest.fn();
-		const fn = jest.fn();
+		const mockExit = vi.spyOn(process, 'exit').mockImplementation(noop);
+		console.error = vi.fn();
+		const fn = vi.fn();
 
 		const prog = cli('bin').command('foo').alias('f', 'fo').action(fn);
 
@@ -39,9 +42,9 @@ describe('usage tests', () => {
 	});
 
 	test('basic (invalid command)', () => {
-		const mockExit = jest.spyOn(process, 'exit').mockImplementation();
-		console.error = jest.fn();
-		const fn = jest.fn();
+		const mockExit = vi.spyOn(process, 'exit').mockImplementation(noop);
+		console.error = vi.fn();
+		const fn = vi.fn();
 
 		const prog = cli('bin').command('foo').alias('f', 'fo').action(fn);
 
@@ -53,8 +56,8 @@ describe('usage tests', () => {
 	});
 
 	test('basic (duplicate command)', () => {
-		const mockExit = jest.spyOn(process, 'exit').mockImplementation();
-		const fn = jest.fn();
+		const mockExit = vi.spyOn(process, 'exit').mockImplementation(noop);
+		const fn = vi.fn();
 
 		try {
 			const prog = cli('bin')
@@ -71,8 +74,8 @@ describe('usage tests', () => {
 	});
 
 	test('basic (help)', () => {
-		console.log = jest.fn();
-		const fn = jest.fn();
+		console.log = vi.fn();
+		const fn = vi.fn();
 
 		const prog = cli('bin').command('foo').alias('f', 'fo').action(fn);
 

@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { argvParser } from '../../src/lib/mri';
 
 describe('mri', () => {
@@ -165,7 +166,10 @@ describe('mri', () => {
 		expect(res1).toEqual({ t: true, _: [] });
 		expect(typeof res1.t).toEqual('boolean');
 
-		const res2 = argvParser(['-t'], { alias: { t: 'tt' }, default: { t: 'boo' } });
+		const res2 = argvParser(['-t'], {
+			alias: { t: 'tt' },
+			default: { t: 'boo' },
+		});
 		expect(res2).toEqual({ t: true, tt: true, _: [] });
 		expect(typeof res2.t).toEqual('boolean');
 

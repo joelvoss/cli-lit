@@ -1,9 +1,9 @@
-import { ALL, DEF } from '@/constants';
-import { help } from '@/lib/help';
-import { argvParser } from '@/lib/mri';
-import { printError } from '@/lib/print-error';
+import { ALL, DEF } from './constants';
+import { help } from './lib/help';
+import { argvParser } from './lib/mri';
+import { printError } from './lib/print-error';
 
-import type { CommandOptions, ParseOptions, Tree, TreeEntry } from '@/types';
+import type { CommandOptions, ParseOptions, Tree, TreeEntry } from './types';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -66,6 +66,7 @@ class Cli {
 			options: [],
 			alias: {},
 			default: {},
+			describe: [],
 			examples: [],
 		};
 		if (opts.alias) this.alias(...opts.alias);
@@ -75,7 +76,7 @@ class Cli {
 	}
 
 	describe(str: string | string[]) {
-		const treeEntry = this.tree[this.curr || DEF] as TreeEntry;
+		const treeEntry = this.tree[this.curr || DEF];
 		if (Array.isArray(str)) {
 			treeEntry.describe = str;
 		} else {
@@ -96,15 +97,17 @@ class Cli {
 			throw new Error('Cannot call `alias()` before defining a command');
 		}
 
-		const treeEntry = this.tree[this.curr] as TreeEntry;
+		const treeEntry = this.tree[this.curr];
 		treeEntry.alibi = treeEntry.alibi.concat(...names);
-		treeEntry.alibi.forEach((key: string) => (this.tree[key] = this.curr));
+		treeEntry.alibi.forEach(
+			(key: string) => (this.tree[key] = this.curr as unknown as TreeEntry),
+		);
 
 		return this;
 	}
 
-	option(input: string, desc: string, val: any) {
-		const cmd = this.tree[this.curr || ALL] as TreeEntry;
+	option(input: string, describe?: string, value?: string) {
+		const cmd = this.tree[this.curr || ALL];
 
 		// NOTE(joel): Strips leading `-|--` and extra space(s).
 		let [flag, alias] = (input || '')
@@ -123,12 +126,12 @@ class Cli {
 			cmd.alias[alias] = (cmd.alias[alias] || []).concat(flag);
 		}
 
-		const arr = [_str, desc || ''];
+		const arr = [_str, describe || ''];
 
 		// NOTE(joel): Set default flag:value pair.
-		if (val != null) {
-			arr.push(val);
-			cmd.default[flag] = val;
+		if (value != null) {
+			arr.push(value);
+			cmd.default[flag] = value;
 		} else if (alias == null) {
 			cmd.default[flag] = null;
 		}
@@ -137,14 +140,14 @@ class Cli {
 		return this;
 	}
 
-	action(handler: Function) {
-		const treeEntry = this.tree[this.curr || DEF] as TreeEntry;
+	action(handler: TreeEntry['handler']) {
+		const treeEntry = this.tree[this.curr || DEF];
 		treeEntry.handler = handler;
 		return this;
 	}
 
 	example(str: string) {
-		const treeEntry = this.tree[this.curr || DEF] as TreeEntry;
+		const treeEntry = this.tree[this.curr || DEF];
 		treeEntry.examples.push(str);
 		return this;
 	}
@@ -166,13 +169,13 @@ class Cli {
 		let name = '';
 		let cmd: TreeEntry | undefined;
 		if (this.single) {
-			cmd = this.tree[DEF] as TreeEntry;
+			cmd = this.tree[DEF];
 		} else {
 			let tmpCmd;
 			// NOTE(joel): Loop thru possible command(s)
 			for (let i = 1, l = parsedArgs._.length + 1; i < l; i++) {
 				tmpCmd = parsedArgs._.slice(0, i).join('');
-				const treeEntry = this.tree[tmpCmd];
+				const treeEntry = this.tree[tmpCmd] as TreeEntry | string;
 				if (typeof treeEntry === 'string') {
 					name = treeEntry;
 					const nameSplits = name.split(' ');
@@ -185,12 +188,12 @@ class Cli {
 				}
 			}
 
-			cmd = this.tree[name] as TreeEntry | undefined;
+			cmd = this.tree[name];
 
 			if (cmd == null) {
 				if (this.default) {
 					name = this.default;
-					cmd = this.tree[name] as TreeEntry;
+					cmd = this.tree[name];
 					args.unshift(name);
 					offset++;
 				} else if (tmpCmd) {
@@ -209,7 +212,7 @@ class Cli {
 			return printError(bin, 'No command specified.');
 		}
 
-		const all = this.tree[ALL] as TreeEntry;
+		const all = this.tree[ALL];
 		// merge all objects :: params > command > all
 		opts.alias = Object.assign(all.alias, cmd!.alias, opts.alias);
 		opts.default = Object.assign(all.default, cmd!.default, opts.default);
@@ -225,7 +228,7 @@ class Cli {
 
 		const segs = cmd!.usage.split(/\s+/);
 		const reqs = segs.filter(x => x.charAt(0) === '<');
-		const handlerArgs = vals._.splice(0, reqs.length);
+		const handlerArgs: (string | undefined)[] = vals._.splice(0, reqs.length);
 
 		if (handlerArgs.length < reqs.length) {
 			if (name) bin += ` ${name}`; // for help text
@@ -234,18 +237,20 @@ class Cli {
 
 		segs
 			.filter(x => x.charAt(0) === '[')
-			.forEach(_ => {
+			.forEach(() => {
 				// NOTE(joel): Adds `undefined` per [slot] if no more.
-				// @ts-expect-error
 				handlerArgs.push(vals._.shift());
 			});
 
-		// @ts-expect-error
-		handlerArgs.push(vals); // flags & co are last
 		if (opts.lazy) {
-			return { args: handlerArgs, name, handler: cmd?.handler };
+			// NOTE(joel): Flags & co are last
+			return { args: [...handlerArgs, vals], name, handler: cmd?.handler };
 		}
-		return cmd?.handler?.apply(null, handlerArgs);
+		if (cmd?.handler != null) {
+			// NOTE(joel): Flags & co are last
+			return cmd.handler.apply(null, [...handlerArgs, vals]);
+		}
+		return;
 	}
 
 	help(str?: string) {

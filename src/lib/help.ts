@@ -1,6 +1,6 @@
-import { Tree, TreeEntry } from '@/types';
-import { ALL, DEF, NEWLINE, INDENT, GAP } from '@/constants';
-import { printSection } from '@/lib/print-section';
+import { Tree, TreeEntry } from '../types';
+import { ALL, DEF, NEWLINE, INDENT, GAP } from '../constants';
+import { printSection } from './print-section';
 
 ////////////////////////////////////////////////////////////////////////////////
 

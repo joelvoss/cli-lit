@@ -1,8 +1,13 @@
-import { INDENT, NEWLINE } from '@/constants';
+import { INDENT, NEWLINE } from '../constants';
 
+const noop = (s: string) => s;
+
+/**
+ * Print a section with a title and lines.
+ */
 export function printSection(
 	title: string,
-	lines: string[] | undefined | null,
+	lines?: string[] | null,
 	fn: typeof noop = noop,
 ) {
 	if (lines == null || lines.length === 0) return '';
@@ -13,10 +18,4 @@ export function printSection(
 	}
 
 	return out + NEWLINE;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-function noop(s: string) {
-	return s;
 }

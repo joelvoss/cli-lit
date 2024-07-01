@@ -1,5 +1,5 @@
-import { toArr } from '@/lib/to-arr';
-import { ArgvParserOptions, ArgvParserOutput } from '@/types';
+import { ArgvParserOptions, ArgvParserOutput } from '../types';
+import { toArr } from './to-arr';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -8,7 +8,7 @@ export function argvParser(
 	_opts?: ArgvParserOptions,
 ) {
 	const args = _args || [];
-	const opts: ArgvParserOptions = _opts || {};
+	const opts = _opts || {};
 
 	const hasAliases = opts.alias != null;
 	const hasDefaults = opts.default != null;

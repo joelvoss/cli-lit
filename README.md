@@ -6,8 +6,6 @@ Tool for building command-line interface (CLI) applications for Node.js
 
 ```bash
 $ npm i cli-lit
-# or
-$ yarn add cli-lit
 ```
 
 ## Usage
@@ -430,9 +428,3 @@ $ ./Taskfile.sh validate
 
 (3) Start developing. See [`./Taskfile.sh`](./Taskfile.sh) for more tasks to
 help you develop.
-
----
-
-_This project was set up by @jvdx/core_
-
-[install-node]: https://github.com/nvm-sh/nvm

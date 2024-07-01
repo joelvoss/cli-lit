@@ -13,5 +13,5 @@ cli('bin')
 	})
 
 	.parse(process.argv, {
-		unknown: x => `Custom error: ${x}`
+		unknown: x => `Custom error: ${x}`,
 	});

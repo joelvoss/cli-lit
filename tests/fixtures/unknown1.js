@@ -12,5 +12,5 @@ cli('bin')
 	})
 
 	.parse(process.argv, {
-		unknown: () => false
+		unknown: () => false,
 	});

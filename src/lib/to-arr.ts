@@ -1,7 +1,10 @@
-type ConditialArrayType<T> = T extends any[] ? T : T[];
+type Unarray<T> = T extends Array<infer U> ? U : T;
 
-export function toArr<T>(input?: T): ConditialArrayType<T> {
-	if (input == null) return [] as ConditialArrayType<T>;
-	if (Array.isArray(input)) return [].concat(...input) as ConditialArrayType<T>;
-	return [input] as ConditialArrayType<T>;
+/**
+ * Converts a value to an array.
+ */
+export function toArr<T>(input?: T): Unarray<T>[] {
+	if (input == null) return [];
+	if (Array.isArray(input)) return [].concat(...input);
+	return [input] as Unarray<T>[];
 }

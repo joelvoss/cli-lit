@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { cli } from '../src/index';
 
 describe('cli', () => {
@@ -97,7 +98,7 @@ describe('cli', () => {
 		expect(fooCmd.examples).toEqual(['foo --force']);
 
 		// Description
-		expect(fooCmd.describe == null).toBe(true);
+		expect(fooCmd.describe).toStrictEqual([]);
 		ctx.describe('hello world');
 		expect(Array.isArray(fooCmd.describe)).toBe(true);
 		expect(fooCmd.describe).toEqual(['hello world']);
@@ -154,14 +155,15 @@ describe('cli', () => {
 			.option('--with-kiss, -k', 'Super friendly?')
 			.action((name, opts) => {
 				expect(name).toBe(a);
-				b && expect(opts.loud).toBe(true);
-				c && expect(opts['with-kiss']).toBe(true);
-				d && expect(opts['with-kiss']).toBe('cheek');
-				e && expect(opts['with-kiss']).toBe(false);
+				b && expect(opts!['loud']).toBe(true);
+				c && expect(opts!['with-kiss']).toBe(true);
+				d && expect(opts!['with-kiss']).toBe('cheek');
+				e && expect(opts!['with-kiss']).toBe(false);
 				b = c = d = e = false;
 			});
 
-		const run = args => prog.parse(['', '', 'greet', a].concat(args || []));
+		const run = (args?: string | string[]) =>
+			prog.parse(['', '', 'greet', a].concat(args || []));
 
 		const cmd = prog.tree.greet;
 		expect('handler' in cmd).toBe(true);
@@ -185,7 +187,7 @@ describe('cli', () => {
 		const prog = cli('foo')
 			.command('build <src> <dest>')
 			.option('-f, --force', 'Force foo overwrite')
-			.action((src, dest, opts) => {
+			.action((src: string, dest: string, opts) => {
 				expect(src).toBe(a);
 				expect(dest).toBe(b);
 				c && expect('force' in opts && opts.force).toBe(true);
@@ -194,7 +196,7 @@ describe('cli', () => {
 
 		expect(prog.tree.build.usage).toBe('build <src> <dest>');
 
-		const run = _ => prog.parse(['', '', 'build', a, b, c && '-f']);
+		const run = () => prog.parse(['', '', 'build', a, b, c ? '-f' : '']);
 
 		run(); // +2 tests
 		(c = true) && run(); // +4 tests
@@ -219,7 +221,7 @@ describe('cli', () => {
 
 		expect(prog.tree.build.usage).toBe('build [src] [dest]');
 
-		const run = _ => prog.parse(['', '', 'build', a, b, c && '-f']);
+		const run = () => prog.parse(['', '', 'build', a, b, c ? '-f' : '']);
 
 		run(); // +2 tests
 		(c = true) && run(); // +4 tests
@@ -311,8 +313,8 @@ describe('cli', () => {
 				f && expect(opts.force).toBe(true);
 			});
 
-		const run = _ =>
-			prog.parse(['', '', 'build', val, f && '--force'], { lazy: true });
+		const run = () =>
+			prog.parse(['', '', 'build', val, f ? '--force' : ''], { lazy: true });
 
 		const res1 = run();
 
@@ -350,7 +352,8 @@ describe('cli', () => {
 				f && expect(opts.force).toBe(true);
 			});
 
-		const run = _ => prog.parse(['', '', val, f && '--force'], { lazy: true });
+		const run = () =>
+			prog.parse(['', '', val, f ? '--force' : ''], { lazy: true });
 
 		const res1 = run();
 		expect(res1.constructor).toBe(Object);
@@ -365,7 +368,8 @@ describe('cli', () => {
 
 		res1.handler.apply(null, res1.args); // +1 test
 
-		const res2 = run((f = true));
+		f = true;
+		const res2 = run();
 		expect(res2.constructor).toBe(Object);
 		expect(res2.args[1].constructor).toBe(Object);
 		expect(res2.args[1].force).toBe(true);

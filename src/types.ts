@@ -1,12 +1,12 @@
 export type ArgvParserOptions = {
 	alias?: Record<string, string | string[]>;
-	default?: Record<string, any>;
-	[key: string]: any;
+	default?: Record<string, unknown>;
+	[key: string]: unknown;
 };
 
 export type ArgvParserOutput = {
-	_: Array<string>;
-	[key: string]: any;
+	_: string[];
+	[key: string]: unknown;
 };
 
 export type TreeEntry = {
@@ -14,12 +14,13 @@ export type TreeEntry = {
 	alibi: string[];
 	options: string[][];
 	alias: Record<string, string[]>;
-	default: Record<string, boolean | undefined | null>;
+	default: Record<string, string | boolean | null>;
 	examples: string[];
-	describe?: string[];
-	handler?: Function;
+	describe: string[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	handler?: (...args: any[]) => void;
 };
-export type Tree = Record<string, TreeEntry | string>;
+export type Tree = Record<string, TreeEntry>;
 
 export type CommandOptions = {
 	default?: boolean;

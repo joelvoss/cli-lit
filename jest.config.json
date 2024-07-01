@@ -1,6 +1,0 @@
-{
-	"preset": "@jvdx/jest-preset",
-  "moduleNameMapper": {
-    "@/(.*)": "<rootDir>/src/$1"
-  }
-}
