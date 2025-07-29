@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { argvParser } from '../../src/lib/mri';
 
 describe('mri', () => {

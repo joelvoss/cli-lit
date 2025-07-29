@@ -1,4 +1,4 @@
-import { ArgvParserOptions, ArgvParserOutput } from '../types';
+import type { ArgvParserOptions, ArgvParserOutput } from '../types';
 import { toArr } from './to-arr';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ export function argvParser(
 			const val =
 				arg.substring(++splitIdx) ||
 				i + 1 === len ||
-				('' + args[i + 1]).charCodeAt(0) === 45 ||
+				`${args[i + 1]}`.charCodeAt(0) === 45 ||
 				args[++i];
 
 			const arr = j === 2 ? [name] : name;
@@ -80,12 +80,14 @@ export function argvParser(
 			for (let i = 0; i < arr.length; i++) {
 				const name = arr[i];
 
-				let x;
-				let nxt;
+				let x: string | number | boolean;
+				let nxt: string | number | boolean;
 				const possiblenxtVal = i + 1 < arr.length || val;
 
 				if (typeof possiblenxtVal === 'boolean') {
 					nxt = possiblenxtVal;
+					// biome-ignore lint/complexity/noCommaOperator: .
+					// biome-ignore lint/suspicious/noAssignInExpressions: .
 				} else if (((x = +possiblenxtVal), x * 0 === 0)) {
 					nxt = x;
 				} else {

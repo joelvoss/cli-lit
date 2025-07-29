@@ -1,4 +1,5 @@
-import { describe, test, expect } from 'vitest';
+/** biome-ignore-all lint/suspicious/noAssignInExpressions: . */
+import { describe, expect, test } from 'vitest';
 import { cli } from '../src/index';
 
 describe('cli', () => {
@@ -75,7 +76,7 @@ describe('cli', () => {
 	test('command', () => {
 		const ctx = cli('test').command('foo');
 		expect('foo' in ctx.tree).toBe(true);
-		const fooCmd = ctx.tree['foo'];
+		const fooCmd = ctx.tree.foo;
 
 		expect(typeof fooCmd.usage).toBe('string');
 		expect(Array.isArray(fooCmd.options)).toBe(true);
@@ -147,7 +148,7 @@ describe('cli', () => {
 	test('action', () => {
 		expect.assertions(13);
 		const a = 'Bob';
-		let b, c, d, e;
+		let b: boolean, c: boolean, d: boolean, e: boolean;
 
 		const prog = cli('foo')
 			.command('greet <name>')
@@ -155,7 +156,7 @@ describe('cli', () => {
 			.option('--with-kiss, -k', 'Super friendly?')
 			.action((name, opts) => {
 				expect(name).toBe(a);
-				b && expect(opts!['loud']).toBe(true);
+				b && expect(opts!.loud).toBe(true);
 				c && expect(opts!['with-kiss']).toBe(true);
 				d && expect(opts!['with-kiss']).toBe('cheek');
 				e && expect(opts!['with-kiss']).toBe(false);

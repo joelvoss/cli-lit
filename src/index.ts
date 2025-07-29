@@ -100,6 +100,7 @@ class Cli {
 		const treeEntry = this.tree[this.curr];
 		treeEntry.alibi = treeEntry.alibi.concat(...names);
 		treeEntry.alibi.forEach(
+			// biome-ignore lint/suspicious/noAssignInExpressions: .
 			(key: string) => (this.tree[key] = this.curr as unknown as TreeEntry),
 		);
 
@@ -171,7 +172,7 @@ class Cli {
 		if (this.single) {
 			cmd = this.tree[DEF];
 		} else {
-			let tmpCmd;
+			let tmpCmd: string | undefined;
 			// NOTE(joel): Loop thru possible command(s)
 			for (let i = 1, l = parsedArgs._.length + 1; i < l; i++) {
 				tmpCmd = parsedArgs._.slice(0, i).join('');

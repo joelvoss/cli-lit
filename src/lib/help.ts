@@ -1,5 +1,5 @@
-import { Tree, TreeEntry } from '../types';
-import { ALL, DEF, NEWLINE, INDENT, GAP } from '../constants';
+import { ALL, DEF, GAP, INDENT, NEWLINE } from '../constants';
+import type { Tree, TreeEntry } from '../types';
 import { printSection } from './print-section';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ export function help(bin: string, tree: Tree, key: string, single: boolean) {
 
 			cmds.push([key, ((tree[key] as TreeEntry).describe || [''])[0]]);
 			if (cmds.length < 3) {
-				help += NEWLINE + INDENT + INDENT + `${pfx} ${key} --help`;
+				help += `${NEWLINE + INDENT + INDENT}${pfx} ${key} --help`;
 			}
 		}
 
@@ -70,7 +70,7 @@ function format(arr: string[][]) {
 			a[0] +
 			' '.repeat(len - a[0].length) +
 			a[1] +
-			(a[2] == null ? '' : INDENT + `(default ${a[2]})`),
+			(a[2] == null ? '' : `${INDENT}(default ${a[2]})`),
 	);
 }
 

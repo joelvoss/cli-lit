@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { cli } from '../src/index';
 
-const noop = vi.fn() as () => never;
+const noop = vi.fn() as unknown as () => never;
 
 describe('usage tests', () => {
 	beforeEach(() => {
@@ -10,7 +10,7 @@ describe('usage tests', () => {
 	});
 
 	test('basic', () => {
-		const fn = vi.fn() as () => never;
+		const fn = vi.fn() as unknown as () => never;
 
 		const prog = cli('bin').command('foo').alias('f', 'fo').action(fn);
 

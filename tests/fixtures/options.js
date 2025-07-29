@@ -20,6 +20,6 @@ cli('bin')
 	.option('--only', 'no short alias')
 	.action((dir, opts) => {
 		let pre = opts.only ? '~> (only)' : '~>';
-		console.log(pre + ` "bar" with "${dir}" value`);
+		console.log(`${pre} "bar" with "${dir}" value`);
 	})
 	.parse(process.argv);
