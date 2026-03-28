@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { toArr } from '../../src/lib/to-arr';
 
 describe('toArr', () => {

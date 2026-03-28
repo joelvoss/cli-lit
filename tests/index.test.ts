@@ -1,5 +1,6 @@
-/** biome-ignore-all lint/suspicious/noAssignInExpressions: . */
+/* oxlint-disable no-unused-expressions, no-constant-binary-expression */
 import { describe, expect, test } from 'vitest';
+
 import { cli } from '../src/index';
 
 describe('cli', () => {
@@ -19,7 +20,7 @@ describe('cli', () => {
 
 		expect(Object.keys(ctx.tree)).toEqual(['__all__', '__default__']);
 
-		for (let k in ctx.tree) {
+		for (const k in ctx.tree) {
 			expect(typeof ctx.tree[k].usage).toBe('string');
 			expect(Array.isArray(ctx.tree[k].options)).toBe(true);
 			expect(Array.isArray(ctx.tree[k].examples)).toBe(true);
@@ -236,8 +237,8 @@ describe('cli', () => {
 		expect(argv1).toEqual(['', '', 'build']);
 		expect(res1.args).toEqual([{ _: [] }]);
 
-		let argv2 = ['', ''];
-		let res2 = prog.parse(argv2, { lazy: true });
+		const argv2 = ['', ''];
+		const res2 = prog.parse(argv2, { lazy: true });
 		expect(argv2).toEqual(['', '']);
 		expect(res2.args).toEqual([{ _: [] }]);
 	});
@@ -250,8 +251,8 @@ describe('cli', () => {
 		expect(argv1).toEqual(['', '', 'build']);
 		expect(res1.args).toEqual([{ _: [] }]);
 
-		let argv2 = ['', '', 'b'];
-		let res2 = prog.parse(argv2, { lazy: true });
+		const argv2 = ['', '', 'b'];
+		const res2 = prog.parse(argv2, { lazy: true });
 		expect(argv2).toEqual(['', '', 'b']);
 		expect(res2.args).toEqual([{ _: [] }]);
 	});
@@ -272,8 +273,8 @@ describe('cli', () => {
 		]);
 		expect(res1.args).toEqual(['public', { _: [], r: 'dotenv', fresh: true }]);
 
-		let argv2 = ['', '', '-r', 'dotenv', 'public', '--fresh'];
-		let res2 = prog.parse(argv2, { lazy: true });
+		const argv2 = ['', '', '-r', 'dotenv', 'public', '--fresh'];
+		const res2 = prog.parse(argv2, { lazy: true });
 		expect(argv2).toEqual(['', '', '-r', 'dotenv', 'public', '--fresh']);
 		expect(res2.args).toEqual(['public', { _: [], r: 'dotenv', fresh: true }]);
 	});
@@ -294,8 +295,8 @@ describe('cli', () => {
 		]);
 		expect(res1.args).toEqual(['public', { _: [], r: 'dotenv', fresh: true }]);
 
-		let argv2 = ['', '', '-r', 'dotenv', 'b', 'public', '--fresh'];
-		let res2 = prog.parse(argv2, { lazy: true });
+		const argv2 = ['', '', '-r', 'dotenv', 'b', 'public', '--fresh'];
+		const res2 = prog.parse(argv2, { lazy: true });
 		expect(argv2).toEqual(['', '', '-r', 'dotenv', 'b', 'public', '--fresh']);
 		expect(res2.args).toEqual(['public', { _: [], r: 'dotenv', fresh: true }]);
 	});

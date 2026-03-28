@@ -8,7 +8,7 @@ cli('bin')
 	.option('-l, --long', 'long flag')
 	.option('-s, --short', 'short flag')
 	.option('-h, --hello', 'override')
-	.action(opts => {
+	.action((opts) => {
 		if (opts.long) return console.log('~> ran "long" option');
 		if (opts.short) return console.log('~> ran "short" option');
 		if (opts.hello) return console.log('~> ran "hello" option');

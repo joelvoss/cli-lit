@@ -1,10 +1,11 @@
 import { describe, expect, test } from 'vitest';
+
 import { printSection } from '../../src/lib/print-section';
 
 describe('printSection', () => {
 	const title = 'Description';
 	const lines = ['Line no. 1', 'Line no. 2'];
-	const prefix = s => `prefix: ${s}`;
+	const prefix = (s) => `prefix: ${s}`;
 
 	test(`should print a section string`, () => {
 		const res = printSection(title, lines);

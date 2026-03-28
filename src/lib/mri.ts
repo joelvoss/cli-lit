@@ -18,7 +18,7 @@ export function argvParser(
 
 	// NOTE(joel): Expand aliases for every permutation.
 	if (hasAliases) {
-		for (let k in opts.alias) {
+		for (const k in opts.alias) {
 			alias[k] = toArr(opts.alias[k]);
 			const arr = alias[k];
 			for (let i = 0; i < arr.length; i++) {
@@ -29,7 +29,7 @@ export function argvParser(
 	}
 
 	if (hasDefaults) {
-		for (let k in opts.default) {
+		for (const k in opts.default) {
 			alias[k] = alias[k] || [];
 		}
 	}
@@ -86,8 +86,7 @@ export function argvParser(
 
 				if (typeof possiblenxtVal === 'boolean') {
 					nxt = possiblenxtVal;
-					// biome-ignore lint/complexity/noCommaOperator: .
-					// biome-ignore lint/suspicious/noAssignInExpressions: .
+					// oxlint-disable-next-line no-sequences, no-cond-assign, erasing-op
 				} else if (((x = +possiblenxtVal), x * 0 === 0)) {
 					nxt = x;
 				} else {
@@ -107,7 +106,7 @@ export function argvParser(
 
 	// NOTE(joel): Overwrite empty flags with their respective default values.
 	if (hasDefaults) {
-		for (let k in opts.default) {
+		for (const k in opts.default) {
 			if (out[k] == null) {
 				out[k] = opts.default[k];
 			}
@@ -115,7 +114,7 @@ export function argvParser(
 	}
 
 	if (hasAliases) {
-		for (let k in out) {
+		for (const k in out) {
 			const arr = alias[k] || [];
 			while (arr.length > 0) {
 				out[arr.shift()!] = out[k];

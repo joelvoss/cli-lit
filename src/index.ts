@@ -2,7 +2,6 @@ import { ALL, DEF } from './constants';
 import { help } from './lib/help';
 import { argvParser } from './lib/mri';
 import { printError } from './lib/print-error';
-
 import type { CommandOptions, ParseOptions, Tree, TreeEntry } from './types';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +15,7 @@ class Cli {
 	curr: string;
 
 	constructor(name: string, isOne?: boolean) {
-		let [bin, ...rest] = name.split(/\s+/);
+		const [bin, ...rest] = name.split(/\s+/);
 		isOne = isOne || rest.length > 0;
 
 		this.bin = bin;
@@ -39,7 +38,7 @@ class Cli {
 		const cmdArr: string[] = [];
 		const usage = [];
 		const rgx = /(\[|<)/;
-		str.split(/\s+/).forEach(x => {
+		str.split(/\s+/).forEach((x) => {
 			if (rgx.test(x.charAt(0))) {
 				usage.push(x);
 			} else {
@@ -54,6 +53,7 @@ class Cli {
 		}
 
 		// re-include `cmd` for commands
+		// oxlint-disable-next-line no-unused-expressions
 		cmdString.includes('__') || usage.unshift(cmdString);
 		const usageString = usage.join(' ');
 
@@ -100,7 +100,6 @@ class Cli {
 		const treeEntry = this.tree[this.curr];
 		treeEntry.alibi = treeEntry.alibi.concat(...names);
 		treeEntry.alibi.forEach(
-			// biome-ignore lint/suspicious/noAssignInExpressions: .
 			(key: string) => (this.tree[key] = this.curr as unknown as TreeEntry),
 		);
 
@@ -228,7 +227,7 @@ class Cli {
 		}
 
 		const segs = cmd!.usage.split(/\s+/);
-		const reqs = segs.filter(x => x.charAt(0) === '<');
+		const reqs = segs.filter((x) => x.charAt(0) === '<');
 		const handlerArgs: (string | undefined)[] = vals._.splice(0, reqs.length);
 
 		if (handlerArgs.length < reqs.length) {
@@ -237,7 +236,7 @@ class Cli {
 		}
 
 		segs
-			.filter(x => x.charAt(0) === '[')
+			.filter((x) => x.charAt(0) === '[')
 			.forEach(() => {
 				// NOTE(joel): Adds `undefined` per [slot] if no more.
 				handlerArgs.push(vals._.shift());

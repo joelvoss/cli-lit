@@ -3,7 +3,7 @@ import { cli } from '../../dist/cli-lit.module.js';
 
 cli('bin')
 	.command('remote', '', { alias: 'r' })
-	.action(_opts => {
+	.action((_opts) => {
 		console.log('~> ran "remote" action');
 	})
 

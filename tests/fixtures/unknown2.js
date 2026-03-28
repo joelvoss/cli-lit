@@ -8,10 +8,10 @@ cli('bin')
 	.command('foo', '', { alias: 'f' })
 	.option('-l, --local', 'command flag')
 	.option('--flag2', 'no alias or default')
-	.action(opts => {
+	.action((opts) => {
 		console.log(`~> ran "foo" with ${JSON.stringify(opts)}`);
 	})
 
 	.parse(process.argv, {
-		unknown: x => `Custom error: ${x}`,
+		unknown: (x) => `Custom error: ${x}`,
 	});

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import { cli } from '../src/index';
 
 const noop = vi.fn() as unknown as () => never;

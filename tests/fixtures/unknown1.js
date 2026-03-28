@@ -7,7 +7,7 @@ cli('bin')
 
 	.command('foo', '', { alias: 'f' })
 	.option('-l, --local', 'command flag')
-	.action(opts => {
+	.action((opts) => {
 		console.log(`~> ran "foo" with ${JSON.stringify(opts)}`);
 	})
 

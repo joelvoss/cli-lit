@@ -64,7 +64,7 @@ export function help(bin: string, tree: Tree, key: string, single: boolean) {
  */
 function format(arr: string[][]) {
 	if (!arr.length) return [''];
-	const len = findLongestStr(arr.map(x => x[0])) + GAP;
+	const len = findLongestStr(arr.map((x) => x[0])) + GAP;
 	return arr.map(
 		(a: string[]) =>
 			a[0] +
